@@ -33,11 +33,12 @@ public class GuiChat extends javax.swing.JFrame {
         initComponentsNew();
         this.setLocationRelativeTo(null);
         this.setTitle("Java Simple Chatting");
+        this.getRootPane().setDefaultButton(jButton1);
+        
         PlaceHolder ph = new PlaceHolder(jTextField2, "Tulis pesan disini");
         
         String inputIp = JOptionPane.showInputDialog("Masukkan ip tujuan");
         ip = inputIp;
-        
     }
 
     /**
@@ -65,6 +66,11 @@ public class GuiChat extends javax.swing.JFrame {
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
+            }
+        });
+        jButton1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jButton1KeyPressed(evt);
             }
         });
 
@@ -198,18 +204,7 @@ public class GuiChat extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        try {
-            Socket sk = new Socket(ip, socket);
-            DataOutputStream dos = new DataOutputStream(sk.getOutputStream());
-            dos.writeChars("[" + InetAddress.getLocalHost() + "] : " + jTextField2.getText());
-            dos.close();
-            textArea.append("[" + InetAddress.getLocalHost() + "] : " + jTextField2.getText());
-            jTextField2.setText("");
-            PlaceHolder ph = new PlaceHolder(jTextField2, "Tulis pesan disini");
-            
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+        sendMessage();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
@@ -227,6 +222,14 @@ public class GuiChat extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
+    private void jButton1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jButton1KeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == evt.VK_ENTER) {
+            sendMessage();
+        }
+    }//GEN-LAST:event_jButton1KeyPressed
+
+    
     /**
      * @param args the command line arguments
      */
@@ -275,6 +278,20 @@ public class GuiChat extends javax.swing.JFrame {
                 textArea.append(data + "\n");
                 dis.close();
             }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+    
+    private void sendMessage(){
+        try {
+            Socket sk = new Socket(ip, socket);
+            DataOutputStream dos = new DataOutputStream(sk.getOutputStream());
+            dos.writeChars("[" + InetAddress.getLocalHost() + "] : " + jTextField2.getText());
+            dos.close();
+            textArea.append("[" + InetAddress.getLocalHost() + "] : " + jTextField2.getText() + "\n");
+            jTextField2.setText("");
+            PlaceHolder ph = new PlaceHolder(jTextField2, "Tulis pesan disini");
         } catch (Exception e) {
             System.out.println(e);
         }
