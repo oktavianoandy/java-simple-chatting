@@ -12,7 +12,7 @@ Berikut ini adalah petunjuk penggunaan aplikasi ini.
 
 ## Screenshot Aplikasi
 
-![alt text](img/ss.PNG "Simple Chat Java")
+![alt text](img/ss.png "Simple Chat Java")
 
 ## Kontributor
 - [Oktaviano Andy Suryadi](https://github.com/oktavianoandy "Github.com")
