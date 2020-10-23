@@ -5,7 +5,6 @@
  */
 package javasimplechat;
 
-import com.placeholder.PlaceHolder;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.InetAddress;
@@ -25,7 +24,7 @@ public class GuiChat extends javax.swing.JFrame {
     private static String data = "";
     private static javax.swing.JTextArea textArea;
     private static javax.swing.JScrollPane jScrollPane1;
-    
+
     private String ip;
     private static int socket = 1111;
 
@@ -34,11 +33,8 @@ public class GuiChat extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.setTitle("Java Simple Chatting");
         this.getRootPane().setDefaultButton(jButton1);
-        
-        PlaceHolder ph = new PlaceHolder(jTextField2, "Tulis pesan disini");
-        
-        String inputIp = JOptionPane.showInputDialog("Masukkan ip tujuan");
-        ip = inputIp;
+        setIP();
+        jTextField2.requestFocus();
     }
 
     /**
@@ -53,6 +49,8 @@ public class GuiChat extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jTextField2 = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
@@ -75,6 +73,19 @@ public class GuiChat extends javax.swing.JFrame {
         });
 
         jTextField2.setMargin(new java.awt.Insets(3, 3, 3, 3));
+
+        jMenu1.setText("Pengaturan");
+
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jMenuItem1.setText("IP Tujuan");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
+
+        jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Bantuan");
 
@@ -128,6 +139,8 @@ public class GuiChat extends javax.swing.JFrame {
         textArea = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
         jTextField2 = new javax.swing.JTextField();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
@@ -147,11 +160,28 @@ public class GuiChat extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
+        jButton1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jButton1KeyPressed(evt);
+            }
+        });
 
         jTextField2.setMargin(new java.awt.Insets(3, 3, 3, 3));
 
-        jMenu2.setText("Bantuan");
+        jMenu1.setText("Pengaturan");
 
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jMenuItem1.setText("IP Tujuan");
+        jMenu1.add(jMenuItem1);
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Bantuan");
 
         jMenuItem3.setText("Tentang Aplikasi");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
@@ -229,7 +259,11 @@ public class GuiChat extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton1KeyPressed
 
-    
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+        setIP();
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -274,7 +308,6 @@ public class GuiChat extends javax.swing.JFrame {
                 Socket sk = ss.accept();
                 DataInputStream dis = new DataInputStream(sk.getInputStream());
                 data = dis.readLine();
-                System.out.println(data);
                 textArea.append(data + "\n");
                 dis.close();
             }
@@ -282,8 +315,8 @@ public class GuiChat extends javax.swing.JFrame {
             System.out.println(e);
         }
     }
-    
-    private void sendMessage(){
+
+    private void sendMessage() {
         try {
             Socket sk = new Socket(ip, socket);
             DataOutputStream dos = new DataOutputStream(sk.getOutputStream());
@@ -291,16 +324,26 @@ public class GuiChat extends javax.swing.JFrame {
             dos.close();
             textArea.append("[" + InetAddress.getLocalHost() + "] : " + jTextField2.getText() + "\n");
             jTextField2.setText("");
-            PlaceHolder ph = new PlaceHolder(jTextField2, "Tulis pesan disini");
         } catch (Exception e) {
-            System.out.println(e);
+            JOptionPane.showMessageDialog(this, "Ups! Pesan gagal dikirim. IP tujuanmu sepertinya salah.");
+            setIP();
+        }
+    }
+
+    private void setIP() {
+        String inputIp = JOptionPane.showInputDialog("Masukkan ip tujuan");
+        if (inputIp != null) {
+            ip = inputIp;
+            textArea.setText("");
         }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JTextField jTextField2;
