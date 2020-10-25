@@ -189,7 +189,7 @@ public class GuiChat extends javax.swing.JFrame {
                 new GuiChat().setVisible(true);
             }
         });
-
+        
         setPort();
         receiveMessage();
     }
@@ -210,7 +210,7 @@ public class GuiChat extends javax.swing.JFrame {
     }
 
     private static void setPort() {
-        String inputPort = JOptionPane.showInputDialog("Masukkan port tujuan");
+        String inputPort = JOptionPane.showInputDialog("Masukkan port");
         if (inputPort != null) {
             while (availablePort(Integer.parseInt(inputPort)) != true) {
                 JOptionPane.showMessageDialog(null, "Ups, Port telah digunakan, ganti port lainya!");
@@ -218,7 +218,7 @@ public class GuiChat extends javax.swing.JFrame {
             }
             Pengaturan.setPortServer(Integer.parseInt(inputPort));
             p.setPortClient(Integer.parseInt(inputPort));
-        }else{
+        } else {
             System.exit(0);
         }
     }
@@ -258,10 +258,10 @@ public class GuiChat extends javax.swing.JFrame {
             }
             textArea.append("[" + InetAddress.getLocalHost() + "] : " + jTextField2.getText() + "\n");
             jTextField2.setText("");
-            jTextField2.requestFocus(); 
+            jTextField2.requestFocus();
         } catch (IOException e) {
             System.out.println(e);
-            JOptionPane.showMessageDialog(this, "Ups! Pesan gagal dikirim. IP tujuanmu sepertinya salah / port telah digunakan.");
+            JOptionPane.showMessageDialog(this, "Ups! Pesan gagal dikirim. IP tujuanmu sepertinya salah.");
             setIP();
         }
     }
