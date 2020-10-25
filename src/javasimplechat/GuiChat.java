@@ -7,6 +7,8 @@ package javasimplechat;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -21,15 +23,12 @@ public class GuiChat extends javax.swing.JFrame {
     /**
      * Creates new form GuiChat
      */
-    private static String data = "";
-    private static javax.swing.JTextArea textArea;
-    private static javax.swing.JScrollPane jScrollPane1;
+    private static Pengaturan p = new Pengaturan();
 
-    private String ip;
-    private static int socket = 1111;
+    private static String data = "";
 
     public GuiChat() {
-        initComponentsNew();
+        initComponents();
         this.setLocationRelativeTo(null);
         this.setTitle("Java Simple Chatting");
         this.getRootPane().setDefaultButton(jButton1);
@@ -48,16 +47,15 @@ public class GuiChat extends javax.swing.JFrame {
 
         jButton1 = new javax.swing.JButton();
         jTextField2 = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        textArea = new javax.swing.JTextArea();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(1800, 1800));
-        setMinimumSize(new java.awt.Dimension(1800, 1800));
+        setMaximumSize(new java.awt.Dimension(0, 0));
         setResizable(false);
 
         jButton1.setText("Kirim");
@@ -74,18 +72,11 @@ public class GuiChat extends javax.swing.JFrame {
 
         jTextField2.setMargin(new java.awt.Insets(3, 3, 3, 3));
 
-        jMenu1.setText("Pengaturan");
-
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        jMenuItem1.setText("IP Tujuan");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jMenuItem1);
-
-        jMenuBar1.add(jMenu1);
+        textArea.setEditable(false);
+        textArea.setColumns(20);
+        textArea.setLineWrap(true);
+        textArea.setRows(5);
+        jScrollPane1.setViewportView(textArea);
 
         jMenu2.setText("Bantuan");
 
@@ -115,15 +106,20 @@ public class GuiChat extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 491, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 491, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(466, 466, 466)
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 444, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE)
                     .addComponent(jTextField2))
@@ -132,105 +128,6 @@ public class GuiChat extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    @SuppressWarnings("unchecked")
-    private void initComponentsNew() {
-        jScrollPane1 = new javax.swing.JScrollPane();
-        textArea = new javax.swing.JTextArea();
-        jButton1 = new javax.swing.JButton();
-        jTextField2 = new javax.swing.JTextField();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu2 = new javax.swing.JMenu();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        textArea.setEditable(false);
-        textArea.setColumns(20);
-        textArea.setLineWrap(true);
-        textArea.setRows(5);
-        jScrollPane1.setViewportView(textArea);
-
-        jButton1.setText("Kirim");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        jButton1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jButton1KeyPressed(evt);
-            }
-        });
-
-        jTextField2.setMargin(new java.awt.Insets(3, 3, 3, 3));
-
-        jMenu1.setText("Pengaturan");
-
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        jMenuItem1.setText("IP Tujuan");
-        jMenu1.add(jMenuItem1);
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
-            }
-        });
-
-        jMenuBar1.add(jMenu1);
-
-        jMenu2.setText("Bantuan");
-
-        jMenuItem3.setText("Tentang Aplikasi");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
-            }
-        });
-        jMenu2.add(jMenuItem3);
-
-        jMenuItem4.setText("Keluar");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
-            }
-        });
-        jMenu2.add(jMenuItem4);
-
-        jMenuBar1.add(jMenu2);
-
-        setJMenuBar(jMenuBar1);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jScrollPane1)
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 491, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)))
-                                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 449, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE)
-                                        .addComponent(jTextField2))
-                                .addContainerGap())
-        );
-
-        pack();
-    }
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
@@ -258,11 +155,6 @@ public class GuiChat extends javax.swing.JFrame {
             sendMessage();
         }
     }//GEN-LAST:event_jButton1KeyPressed
-
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
-        setIP();
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -298,12 +190,13 @@ public class GuiChat extends javax.swing.JFrame {
             }
         });
 
+        setPort();
         receiveMessage();
     }
 
     private static void receiveMessage() {
         try {
-            ServerSocket ss = new ServerSocket(socket);
+            ServerSocket ss = new ServerSocket(Pengaturan.getPortServer());
             while (true) {
                 Socket sk = ss.accept();
                 DataInputStream dis = new DataInputStream(sk.getInputStream());
@@ -316,16 +209,59 @@ public class GuiChat extends javax.swing.JFrame {
         }
     }
 
+    private static void setPort() {
+        String inputPort = JOptionPane.showInputDialog("Masukkan port tujuan");
+        if (inputPort != null) {
+            while (availablePort(Integer.parseInt(inputPort)) != true) {
+                JOptionPane.showMessageDialog(null, "Ups, Port telah digunakan, ganti port lainya!");
+                inputPort = JOptionPane.showInputDialog("Masukkan port tujuan");
+            }
+            Pengaturan.setPortServer(Integer.parseInt(inputPort));
+            p.setPortClient(Integer.parseInt(inputPort));
+        }else{
+            System.exit(0);
+        }
+    }
+
+    private static boolean availablePort(int port) {
+        ServerSocket ss = null;
+        DatagramSocket ds = null;
+        try {
+            ss = new ServerSocket(port);
+            ss.setReuseAddress(true);
+            ds = new DatagramSocket(port);
+            ds.setReuseAddress(true);
+            return true;
+        } catch (IOException e) {
+        } finally {
+            if (ds != null) {
+                ds.close();
+            }
+
+            if (ss != null) {
+                try {
+                    ss.close();
+                } catch (IOException e) {
+                    /* should not be thrown */
+                }
+            }
+        }
+
+        return false;
+    }
+
     private void sendMessage() {
         try {
-            Socket sk = new Socket(ip, socket);
-            DataOutputStream dos = new DataOutputStream(sk.getOutputStream());
-            dos.writeChars("[" + InetAddress.getLocalHost() + "] : " + jTextField2.getText());
-            dos.close();
+            Socket sk = new Socket(p.getIp(), p.getPortClient());
+            try ( DataOutputStream dos = new DataOutputStream(sk.getOutputStream())) {
+                dos.writeChars("[" + InetAddress.getLocalHost() + "] : " + jTextField2.getText());
+            }
             textArea.append("[" + InetAddress.getLocalHost() + "] : " + jTextField2.getText() + "\n");
             jTextField2.setText("");
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Ups! Pesan gagal dikirim. IP tujuanmu sepertinya salah.");
+            jTextField2.requestFocus(); 
+        } catch (IOException e) {
+            System.out.println(e);
+            JOptionPane.showMessageDialog(this, "Ups! Pesan gagal dikirim. IP tujuanmu sepertinya salah / port telah digunakan.");
             setIP();
         }
     }
@@ -333,19 +269,21 @@ public class GuiChat extends javax.swing.JFrame {
     private void setIP() {
         String inputIp = JOptionPane.showInputDialog("Masukkan ip tujuan");
         if (inputIp != null) {
-            ip = inputIp;
+            p.setIp(inputIp);
             textArea.setText("");
+        }else{
+            System.exit(0);
         }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField2;
+    private static javax.swing.JTextArea textArea;
     // End of variables declaration//GEN-END:variables
 }
