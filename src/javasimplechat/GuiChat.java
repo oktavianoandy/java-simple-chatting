@@ -24,9 +24,9 @@ public class GuiChat extends javax.swing.JFrame {
      * Creates new form GuiChat
      */
     private static Pengaturan p = new Pengaturan();
-
+    
     private static String data = "";
-
+    
     public GuiChat() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -50,9 +50,6 @@ public class GuiChat extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         textArea = new javax.swing.JTextArea();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu2 = new javax.swing.JMenu();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(0, 0));
@@ -78,26 +75,6 @@ public class GuiChat extends javax.swing.JFrame {
         textArea.setRows(5);
         jScrollPane1.setViewportView(textArea);
 
-        jMenu2.setText("Bantuan");
-
-        jMenuItem3.setText("Tentang Aplikasi");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
-            }
-        });
-        jMenu2.add(jMenuItem3);
-
-        jMenuItem4.setText("Keluar");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
-            }
-        });
-        jMenu2.add(jMenuItem4);
-
-        jMenuBar1.add(jMenu2);
-
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -121,7 +98,7 @@ public class GuiChat extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 444, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)
                     .addComponent(jTextField2))
                 .addContainerGap())
         );
@@ -133,21 +110,6 @@ public class GuiChat extends javax.swing.JFrame {
         // TODO add your handling code here:
         sendMessage();
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        // TODO add your handling code here:
-        String about = "A simple chatting app with Java GUI.\n"
-                + "\n"
-                + "\n"
-                + "My Github : oktavianoandy\n"
-                + "Created with ❤ by Oktaviano Andy Suryadi.";
-        JOptionPane.showMessageDialog(this, about);
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
-
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        // TODO add your handling code here:
-        System.exit(0);
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jButton1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jButton1KeyPressed
         // TODO add your handling code here:
@@ -189,11 +151,11 @@ public class GuiChat extends javax.swing.JFrame {
                 new GuiChat().setVisible(true);
             }
         });
-        
+         
         setPort();
         receiveMessage();
     }
-
+    
     private static void receiveMessage() {
         try {
             ServerSocket ss = new ServerSocket(Pengaturan.getPortServer());
@@ -208,7 +170,7 @@ public class GuiChat extends javax.swing.JFrame {
             System.out.println(e);
         }
     }
-
+    
     private static void setPort() {
         String inputPort = JOptionPane.showInputDialog("Masukkan port");
         if (inputPort != null) {
@@ -222,7 +184,7 @@ public class GuiChat extends javax.swing.JFrame {
             System.exit(0);
         }
     }
-
+    
     private static boolean availablePort(int port) {
         ServerSocket ss = null;
         DatagramSocket ds = null;
@@ -246,15 +208,15 @@ public class GuiChat extends javax.swing.JFrame {
                 }
             }
         }
-
+        
         return false;
     }
-
+    
     private void sendMessage() {
         try {
             Socket sk = new Socket(p.getIp(), p.getPortClient());
             try ( DataOutputStream dos = new DataOutputStream(sk.getOutputStream())) {
-                dos.writeChars("[" + InetAddress.getLocalHost() + "] : " + jTextField2.getText());
+                dos.writeBytes("[" + InetAddress.getLocalHost() + "] : " + jTextField2.getText());
             }
             textArea.append("[" + InetAddress.getLocalHost() + "] : " + jTextField2.getText() + "\n");
             jTextField2.setText("");
@@ -265,7 +227,7 @@ public class GuiChat extends javax.swing.JFrame {
             setIP();
         }
     }
-
+    
     private void setIP() {
         String inputIp = JOptionPane.showInputDialog("Masukkan ip tujuan");
         if (inputIp != null) {
@@ -278,10 +240,7 @@ public class GuiChat extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField2;
     private static javax.swing.JTextArea textArea;

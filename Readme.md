@@ -10,10 +10,3 @@ Berikut ini adalah petunjuk penggunaan aplikasi ini.
 3. Masukkan ip tujuan dan port yang akan digunakan.
 4. Ketika input ip dikosongkan, maka ip otomatis terisi dengan ip pc Anda sendiri (local).
 5. Jika ingin merubah tujuan pc yang dichat, silahkan jalankan ulang aplikasi.
-
-## Screenshot Aplikasi
-
-![alt text](img/ss.png "Simple Chat Java")
-
-## Kontributor
-- [Oktaviano Andy Suryadi](https://github.com/oktavianoandy "Github.com")
